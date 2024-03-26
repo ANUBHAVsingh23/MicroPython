@@ -1,0 +1,19 @@
+#Wap a micropython script to control the toggling rate of led connected to GPIO 4 with respect to 
+# the knob position of a potentiometer connected to GPIO 34 of ESP32
+from machine import Pin, ADC
+import time import sleep
+led = Pin(4, Pin.OUT)
+pot = ADC(Pin(34))
+pot.atten(ADC.ATTN_11DB)  # Set full range: 3.3v
+
+while True:
+    pot_value = pot.read()
+
+    led.value(not led.value())
+    if led.value():
+        print("LED is ON")
+    else:
+        print("LED is OFF")
+    delay_rate = pot_value / 4095.0
+    print("Delay rate: ", delay_rate)
+    time.sleep(delay_rate)
